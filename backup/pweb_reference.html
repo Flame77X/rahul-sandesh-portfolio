@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-motion="full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portfolio of Rahul Sandesh: AI Architect and ML Engineer specializing in LLMs, Agentic Workflows, RAG pipelines, and Robotics.">
+    
+    <!-- SEO & Social Media (Open Graph) -->
+    <meta property="og:title" content="Rahul Sandesh — AI Architect & ML Engineer">
+    <meta property="og:description" content="Specializing in LLMs, Agentic Systems, RAG pipelines, and Robotics. View 7+ deployed system architectures.">
+    <meta property="og:type" content="website">
+    <meta name="author" content="Rahul Sandesh">
+
+    <title>Rahul Sandesh | AI Architect & ML Engineer</title>
+    
+    <!-- Performance Optimization -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================
+            DESIGN TOKENS
+        ========================= */
+        :root {
+            --color-bg-primary: #050505;
+            --color-bg-surface: rgba(20, 20, 20, 0.4);
+            --color-bg-glass: rgba(10, 10, 10, 0.8);
+            --color-text-primary: #fafafa;
+            --color-text-secondary: #94a3b8;
+            --color-border-subtle: rgba(255, 255, 255, 0.1);
+            --color-accent-primary: #3b82f6;
+            --color-btn-bg: #ffffff;
+            --color-btn-text: #050505;
+            --color-terminal-bg: #0d0d0d;
+            --color-terminal-border: rgba(255, 255, 255, 0.08);
+            --nav-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+        }
+
+        [data-theme="light"] {
+            --color-bg-primary: #f1f5f9; 
+            --color-bg-surface: rgba(255, 255, 255, 0.95);
+            --color-bg-glass: rgba(255, 255, 255, 0.98);
+            --color-text-primary: #0f172a;        
+            --color-text-secondary: #334155;      
+            --color-border-subtle: rgba(0, 0, 0, 0.15);
+            --color-accent-primary: #1d4ed8;      
+            --color-btn-bg: #0f172a;              
+            --color-btn-text: #ffffff;
+            --color-terminal-border: rgba(0, 0, 0, 0.2);
+            --nav-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
+        }
+
+        /* SEMANTIC UTILITIES */
+        .text-main { color: var(--color-text-primary); }
+        .text-muted { color: var(--color-text-secondary); }
+        .btn-theme { background-color: var(--color-btn-bg); color: var(--color-btn-text); transition: all 0.3s ease; }
+        .border-theme { border-color: var(--color-border-subtle); }
+
+        /* REDUCED MOTION */
+        [data-motion="reduced"] * { animation: none !important; transition: none !important; }
+        [data-motion="reduced"] #neural-canvas { display: none; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
+            background-color: var(--color-bg-primary);
+            color: var(--color-text-primary);
+            overflow-x: hidden;
+            font-size: 16px; 
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        @media (min-width: 768px) { body { font-size: 18px; cursor: none; } }
+
+        #neural-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; opacity: 0.4; pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        [data-theme="light"] #neural-canvas { opacity: 0.2; }
+
+        #custom-cursor {
+            display: none; position: fixed; width: 20px; height: 20px;
+            background: var(--color-accent-primary); opacity: 0.6; border-radius: 50%;
+            pointer-events: none; z-index: 10000;
+            transition: transform 0.1s ease-out, opacity 0.3s ease;
+            box-shadow: 0 0 15px var(--color-accent-primary);
+        }
+        @media (hover: hover) and (pointer: fine) { #custom-cursor { display: block; } }
+        .cursor-hover { transform: scale(4.5); opacity: 0.2; }
+
+        .glass {
+            background: var(--color-bg-glass);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--color-border-subtle);
+            box-shadow: var(--nav-shadow);
+            transition: all 0.4s ease;
+        }
+
+        .bento-card {
+            background: var(--color-bg-surface);
+            border: 1px solid var(--color-border-subtle);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(10px);
+        }
+        .bento-card:hover {
+            border-color: var(--color-accent-primary);
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 30px 60px -12px rgba(0,0,0,0.15);
+        }
+
+        .terminal-window {
+            background: var(--color-terminal-bg);
+            border: 1px solid var(--color-terminal-border);
+            font-family: 'JetBrains Mono', monospace;
+            transition: border 0.4s ease;
+        }
+
+        .terminal-input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--color-accent-primary);
+            width: 100%;
+        }
+
+        .reveal {
+            opacity: 0; transform: translateY(30px);
+            transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .text-gradient {
+            background: linear-gradient(to bottom right, var(--color-text-primary) 50%, var(--color-text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #progress-bar {
+            position: fixed; top: 0; left: 0; width: 0%; height: 4px;
+            background: var(--color-accent-primary); z-index: 10001;
+            transition: width 0.1s ease-out;
+        }
+
+        #mobile-menu {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--color-bg-primary); z-index: 10002;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transform: translateY(-100%); transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        #mobile-menu.active { transform: translateY(0); }
+        
+        .max-w-big { max-width: 1600px; }
+
+        .timeline-line {
+            position: absolute; left: 20px; top: 0; bottom: 0; width: 2px;
+            background: linear-gradient(to bottom, transparent, var(--color-accent-primary), transparent);
+            opacity: 0.2;
+        }
+        @media (min-width: 768px) { .timeline-line { left: 40px; } }
+
+        .timeline-dot {
+            position: absolute; left: -2.5rem; top: 50%;
+            transform: translateY(-50%); width: 1.25rem; height: 1.25rem;
+            border-radius: 9999px; border-width: 4px; border-color: var(--color-bg-primary);
+        }
+
+        #preloader {
+            position: fixed; inset: 0; background: #000; z-index: 99999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+
+        .noise {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; pointer-events: none; opacity: 0.03;
+            background: url('https://grainy-gradients.vercel.app/noise.svg');
+        }
+
+        .page-view { display: none; }
+        .page-view.active { display: block; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="text-xs font-black uppercase tracking-[0.5em] text-white animate-pulse">Initializing Neural Interface</div>
+        <div class="w-48 h-0.5 bg-white/10 mt-6 relative overflow-hidden">
+            <div class="absolute inset-y-0 left-0 bg-blue-500 transition-all duration-300" id="loader-fill"></div>
+        </div>
+        <div class="text-[10px] text-gray-500 mt-4 font-bold" id="loader-text">0%</div>
+    </div>
+
+    <div id="progress-bar"></div>
+    <div id="custom-cursor"></div>
+    <div class="noise"></div>
+    <canvas id="neural-canvas"></canvas>
+
+    <!-- Navigation -->
+    <header class="fixed top-0 w-full z-[1000] py-4 px-6 md:py-8 md:px-12 transition-all duration-300" id="navbar">
+        <nav class="max-w-big mx-auto grid grid-cols-[1fr_auto] lg:grid-cols-3 items-center">
+            <!-- Left: Logo -->
+            <div class="flex justify-start">
+                <a href="#" onclick="switchView('main', true)" class="text-xl md:text-2xl font-bold tracking-tighter hover-target text-main">
+                    RAHUL<span class="text-blue-500">.</span>S
+                </a>
+            </div>
+            
+            <!-- Middle: Center Menu -->
+            <div class="hidden lg:flex justify-center">
+                <ul class="flex items-center space-x-10 glass rounded-full px-10 py-3.5 shadow-xl">
+                    <li><a href="#home" onclick="switchView('main')" class="text-sm font-semibold text-muted hover:text-main transition hover-target">Home</a></li>
+                    <li><a href="#about" onclick="switchView('main')" class="text-sm font-semibold text-muted hover:text-main transition hover-target">About</a></li>
+                    <li><a href="#playground" onclick="switchView('main')" class="text-sm font-semibold text-muted hover:text-main transition hover-target">Playground</a></li>
+                    <li><a href="#experience" onclick="switchView('main')" class="text-sm font-semibold text-muted hover:text-main transition hover-target">Experience</a></li>
+                    <li><a href="#projects" onclick="switchView('main')" class="text-sm font-semibold text-muted hover:text-main transition hover-target">Projects</a></li>
+                </ul>
+            </div>
+
+            <!-- Right: Actions -->
+            <div class="flex items-center justify-end space-x-3 md:space-x-4">
+                <button id="motion-toggle" class="w-10 h-10 md:w-12 md:h-12 rounded-full glass flex items-center justify-center hover-target transition text-main" title="Toggle Presentation Mode (Static View)">
+                    <i class="fas fa-eye"></i>
+                </button>
+
+                <button id="theme-toggle" class="w-10 h-10 md:w-12 md:h-12 rounded-full glass flex items-center justify-center hover-target transition text-main">
+                    <i class="fas fa-moon"></i>
+                </button>
+
+                <div class="hidden lg:flex items-center space-x-3">
+                    <a 
+                      href="https://www.dropbox.com/scl/fi/nl5n4mva3c9jwx0hjlhde/Rahul_Resume-new8.pdf?rlkey=uerembop7acq75qwh26p9bv8k&raw=1"
+                      target="_blank"
+                      class="flex items-center justify-center border border-theme px-6 py-3.5 rounded-full text-sm font-black text-main hover:bg-blue-500 hover:text-white transition hover-target"
+                    >
+                      Resume
+                    </a>
+                    <a href="#contact" onclick="switchView('main')" class="flex items-center justify-center btn-theme font-black px-8 py-3.5 rounded-full text-sm hover:scale-105 transition-all shadow-xl hover-target whitespace-nowrap leading-none border border-theme">
+                        Connect
+                    </a>
+                </div>
+
+                <button id="mobile-toggle" class="lg:hidden p-2 z-[10003] relative hover-target text-main">
+                    <div class="w-6 h-0.5 bg-current mb-1.5 transition-all" id="bar1"></div>
+                    <div class="w-6 h-0.5 bg-current mb-1.5 transition-all" id="bar2"></div>
+                    <div class="w-6 h-0.5 bg-current transition-all" id="bar3"></div>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu">
+        <nav class="flex flex-col space-y-4 text-center">
+            <a href="#home" class="py-3 block text-4xl font-extrabold text-main" onclick="switchView('main'); toggleMenu()">Home</a>
+            <a href="#about" class="py-3 block text-4xl font-extrabold text-main" onclick="switchView('main'); toggleMenu()">About</a>
+            <a href="#playground" class="py-3 block text-4xl font-extrabold text-main" onclick="switchView('main'); toggleMenu()">Playground</a>
+            <a href="#experience" class="py-3 block text-4xl font-extrabold text-main" onclick="switchView('main'); toggleMenu()">Experience</a>
+            <a href="#projects" class="py-3 block text-4xl font-extrabold text-main" onclick="switchView('main'); toggleMenu()">Projects</a>
+            <a href="#contact" class="py-3 block text-4xl font-extrabold text-blue-500" onclick="switchView('main'); toggleMenu()">Contact</a>
+        </nav>
+    </div>
+
+    <!-- MAIN VIEW -->
+    <div id="main-view" class="page-view active">
+        <main>
+            <!-- Hero Section -->
+            <section id="home" class="min-h-screen flex flex-col items-center justify-center px-6 relative pt-20">
+                <div class="reveal active flex flex-col items-center text-center max-w-6xl mx-auto">
+                    
+                    <div class="flex justify-center w-full mb-8 md:mb-12">
+                        <div class="inline-flex items-center justify-center space-x-3 px-4 py-1.5 md:px-6 md:py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-500 text-[10px] md:text-xs font-bold uppercase tracking-widest mx-auto">
+                            <span class="relative flex h-2 w-2 md:h-3 md:w-3">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 md:h-3 md:w-3 bg-blue-500"></span>
+                            </span>
+                            <span class="leading-none">Available for Generative AI & ML Roles</span>
+                        </div>
+                    </div>
+                    
+                    <h1 class="text-5xl sm:text-6xl md:text-[100px] lg:text-[135px] font-extrabold tracking-tighter leading-[1.1] pb-10 mb-8 text-gradient">
+                        Architecting Intelligence.
+                    </h1>
+                    
+                    <p id="hero-tagline" class="text-base md:text-2xl text-muted mb-10 md:mb-16 h-8 font-medium max-w-4xl mx-auto"></p>
+                    
+                    <div class="flex flex-col items-center gap-8">
+                        <div class="flex flex-col sm:flex-row justify-center items-center gap-6 md:gap-10">
+                            <a href="#projects" class="bg-[var(--color-text-primary)] text-[var(--color-bg-primary)] px-10 py-4 md:px-14 md:py-6 rounded-full font-extrabold text-base md:text-lg flex items-center justify-center group hover-target transition-all active:scale-95 shadow-2xl">
+                                Enter Inference Lab
+                                <i class="fas fa-arrow-right ml-3 md:ml-4 group-hover:translate-x-2 transition text-xs md:text-sm"></i>
+                            </a>
+                            <div class="flex items-center space-x-8 md:space-x-10 text-muted">
+                                <a href="https://github.com/Flame77X" target="_blank" class="hover:text-blue-500 transition hover-target" aria-label="GitHub"><i class="fab fa-github text-3xl md:text-4xl"></i></a>
+                                <a href="https://www.linkedin.com/in/rahul-sandesh-8a1786246/" target="_blank" class="hover:text-blue-500 transition hover-target" aria-label="LinkedIn"><i class="fab fa-linkedin text-3xl md:text-4xl"></i></a>
+                                <a href="mailto:rahulsandeshx3000@gmail.com" class="hover:text-red-500 transition hover-target" aria-label="Email"><i class="fas fa-envelope text-3xl md:text-4xl"></i></a>
+                            </div>
+                        </div>
+
+                        <a 
+                          href="https://www.dropbox.com/scl/fi/nl5n4mva3c9jwx0hjlhde/Rahul_Resume-new8.pdf?rlkey=uerembop7acq75qwh26p9bv8k&raw=1"
+                          target="_blank"
+                          class="text-sm md:text-base font-bold text-muted hover:text-blue-500 transition hover-target uppercase tracking-widest"
+                        >
+                          View Resume →
+                        </a>
+                    </div>
+                </div>
+                <div class="absolute bottom-10 md:bottom-16 left-1/2 -translate-x-1/2 opacity-30 animate-bounce">
+                    <i class="fas fa-chevron-down text-xl md:text-2xl text-muted"></i>
+                </div>
+            </section>
+
+            <!-- System Philosophy -->
+            <section class="py-24 md:py-48 border-y border-theme bg-black/[0.02] dark:bg-black/20 text-center">
+                <div class="max-w-big mx-auto px-12">
+                    <div class="reveal">
+                        <h3 class="text-xs md:text-sm font-black uppercase tracking-[0.4em] text-blue-500 mb-8">System Philosophy</h3>
+                        <p class="text-3xl md:text-5xl lg:text-6xl font-extrabold max-w-5xl mx-auto leading-tight italic text-gradient">
+                            "I believe AI systems should be <span class="text-blue-500">observable</span>, <span class="text-blue-500">modular</span>, and designed for high-impact human augmentation."
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Playground -->
+            <section id="playground" class="py-24 md:py-48 bg-black/40">
+                <div class="max-w-4xl mx-auto px-6">
+                    <div class="reveal mb-12 text-center">
+                        <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-gradient">Neural Node Interface</h2>
+                        <p class="text-muted font-medium italic">Type 'help' to fetch system protocols.</p>
+                    </div>
+                    
+                    <div class="reveal terminal-window rounded-2xl overflow-hidden shadow-2xl">
+                        <div class="bg-[#1a1a1a] px-6 py-3 flex items-center justify-between border-b border-theme border-white/[0.05]">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
+                            </div>
+                            <div class="text-[10px] text-gray-500 font-black uppercase tracking-widest font-mono">rahul_ai_core_v2.0.sh</div>
+                        </div>
+                        <div class="p-8 h-[300px] overflow-y-auto text-sm md:text-base font-mono text-gray-300 space-y-4" id="terminal-output">
+                            <p class="text-gray-500 italic">Core protocol active. Awaiting user input node...</p>
+                        </div>
+                        <div class="px-8 pb-8 flex items-center">
+                            <span class="text-blue-500 mr-2 font-bold">$</span>
+                            <input type="text" id="terminal-input" class="terminal-input font-mono" placeholder="..." autofocus autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Experience Tenure -->
+            <section id="experience" class="py-24 md:py-48">
+                <div class="max-w-5xl mx-auto px-6">
+                    <h2 class="text-4xl md:text-6xl font-extrabold mb-16 md:mb-32 text-center text-gradient pb-2">Experience Tenure</h2>
+                    <div class="space-y-12 md:space-y-20 timeline-container relative text-main">
+                        <div class="timeline-line hidden md:block"></div>
+                        
+                        <!-- 0. Product Development Intern -->
+                        <div class="reveal bento-card p-8 md:p-14 rounded-[2rem] md:rounded-[3rem] flex flex-col md:flex-row justify-between gap-8 md:gap-12 relative">
+                            <div class="timeline-dot bg-blue-500 hidden md:block shadow-[0_0_20px_#3b82f6]"></div>
+                            <div class="md:w-1/3">
+                                <span class="text-blue-500 font-bold text-[10px] md:text-xs uppercase tracking-[0.3em]">
+                                    Dec 2025 – Jun 2026
+                                </span>
+                                <h3 class="text-xl md:text-3xl font-extrabold mt-2 md:mt-3">
+                                    Product Development Intern
+                                </h3>
+                                <p class="text-muted text-sm md:text-base font-semibold mt-1">
+                                    Drizzla Digital Solutions
+                                </p>
+                            </div>
+                            <div class="md:w-2/3">
+                                <p class="text-base md:text-lg text-muted font-medium leading-relaxed">
+                                    Contributing to AI-driven product development through feature implementation,
+                                    dataset preparation, internal tooling, and R&D support for scalable systems.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 1. AI Intern -->
+                        <div class="reveal bento-card p-8 md:p-14 rounded-[2rem] md:rounded-[3rem] flex flex-col md:flex-row justify-between gap-8 md:gap-12 relative">
+                            <div class="timeline-dot bg-blue-500 hidden md:block shadow-[0_0_20px_#3b82f6]"></div>
+                            <div class="md:w-1/3">
+                                <span class="text-blue-500 font-bold text-[10px] md:text-xs uppercase tracking-[0.3em]">June - Nov 2025</span>
+                                <h3 class="text-xl md:text-3xl font-extrabold mt-2 md:mt-3">AI Engineering Intern</h3>
+                                <p class="text-muted text-sm md:text-base font-semibold mt-1">Pramana AyurTech Solutions</p>
+                            </div>
+                            <div class="md:w-2/3">
+                                <p class="text-base md:text-lg text-muted mb-6 md:mb-8 font-medium leading-relaxed">Architected AI-based clinical decision support systems using LLM and RAG pipelines, improving retrieval efficiency by <span class="text-main font-black">35%</span>.</p>
+                            </div>
+                        </div>
+
+                        <!-- 2. Founder -->
+                        <div class="reveal bento-card p-8 md:p-14 rounded-[2rem] md:rounded-[3rem] flex flex-col md:flex-row justify-between gap-8 md:gap-12 relative">
+                            <div class="timeline-dot bg-muted hidden md:block"></div>
+                            <div class="md:w-1/3">
+                                <span class="text-muted font-bold text-[10px] md:text-xs uppercase tracking-[0.3em]">2021 - Present</span>
+                                <h3 class="text-xl md:text-3xl font-extrabold mt-2 md:mt-3 text-main">Founder & Technical Lead</h3>
+                                <p class="text-muted text-sm md:text-base font-semibold mt-1">Printing Enterprise</p>
+                            </div>
+                            <div class="md:w-2/3 text-muted">
+                                <p class="text-base md:text-lg font-medium leading-relaxed">Scaling an enterprise node serving <span class="text-main font-black underline decoration-blue-500">300+ client nodes</span>, handling logistics and vendor relations.</p>
+                            </div>
+                        </div>
+
+                        <!-- 3. Leadership & 4. Event Lead -->
+                        <div class="grid md:grid-cols-2 gap-8 md:gap-12 relative text-main">
+                            <div class="reveal bento-card p-8 md:p-12 rounded-[2rem] md:rounded-[2.5rem]">
+                                <span class="text-indigo-500 font-bold text-[10px] md:text-xs uppercase tracking-[0.3em]">Leadership</span>
+                                <h3 class="text-xl md:text-2xl font-extrabold mt-2 md:mt-3 text-main">Treasurer</h3>
+                                <p class="text-muted text-xs md:text-sm mb-4 md:mb-6 mt-1">AI Council Providence</p>
+                                <p class="text-base md:text-lg text-muted font-medium">Managed financial allocation for AI node workshops involving <span class="text-main font-bold">200+ neural researchers</span>.</p>
+                            </div>
+                            <div class="reveal bento-card p-8 md:p-12 rounded-[2rem] md:rounded-[2.5rem]">
+                                <span class="text-purple-500 font-bold text-[10px] md:text-xs uppercase tracking-[0.3em]">Operations</span>
+                                <h3 class="text-xl md:text-2xl font-extrabold mt-2 md:mt-3 text-main">Event Lead</h3>
+                                <p class="text-muted text-xs md:text-sm mb-4 md:mb-6 mt-1 text-white/50">Campus Esports</p>
+                                <p class="text-base md:text-lg text-muted font-medium">Orchestrated competitive events with seamless operational flow and synchronized scheduling.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Resume Snapshot -->
+            <section class="py-20 text-center reveal">
+                <h3 class="text-2xl md:text-3xl font-extrabold mb-4 text-main">Resume Snapshot</h3>
+                <p class="text-muted mb-8 max-w-xl mx-auto font-medium">One-page overview of my AI systems, experience, and academic research impact.</p>
+                <div class="flex justify-center gap-6">
+                    <a href="https://www.dropbox.com/scl/fi/nl5n4mva3c9jwx0hjlhde/Rahul_Resume-new8.pdf?rlkey=uerembop7acq75qwh26p9bv8k&raw=1" target="_blank" class="btn-theme px-10 py-4 rounded-full font-black hover:scale-105 transition shadow-xl">View Full Resume</a>
+                    <a href="https://www.dropbox.com/scl/fi/nl5n4mva3c9jwx0hjlhde/Rahul_Resume-new8.pdf?rlkey=uerembop7acq75qwh26p9bv8k&raw=1" download class="border border-theme px-8 py-4 rounded-full font-black text-main hover:bg-blue-500 hover:text-white transition hover-target">Download PDF</a>
+                </div>
+            </section>
+
+            <!-- Inference Lab -->
+            <section id="projects" class="py-24 md:py-48">
+                <div class="max-w-big mx-auto px-6 md:px-12 text-main">
+                    <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-16 md:mb-24 gap-8 md:gap-12">
+                        <div class="reveal text-center md:text-left">
+                            <h2 class="text-5xl md:text-7xl font-extrabold tracking-tighter text-gradient leading-tight">Inference Lab</h2>
+                            <p class="text-lg md:text-xl text-muted font-medium mt-4">Modular AI deployments and architecture cases.</p>
+                        </div>
+                        
+                        <div class="reveal flex flex-wrap justify-center gap-2 md:gap-4">
+                            <button class="filter-btn active text-[10px] md:text-xs font-black uppercase tracking-[0.2em] px-5 py-2 md:px-8 md:py-3 rounded-full border border-theme hover-target transition" data-filter="all">All</button>
+                            <button class="filter-btn text-[10px] md:text-xs font-black uppercase tracking-[0.2em] px-5 py-2 md:px-8 md:py-3 rounded-full border border-theme hover-target transition" data-filter="ai">AI</button>
+                            <button class="filter-btn text-[10px] md:text-xs font-black uppercase tracking-[0.2em] px-5 py-2 md:px-8 md:py-3 rounded-full border border-theme hover-target transition" data-filter="robotics">Robotics</button>
+                            <button class="filter-btn text-[10px] md:text-xs font-black uppercase tracking-[0.2em] px-5 py-2 md:px-8 md:py-3 rounded-full border border-theme hover-target transition" data-filter="web">Web</button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12" id="project-grid">
+                        <!-- AI INTERVIEWER -->
+                        <div class="project-item ai reveal lg:col-span-2 bento-card rounded-[2.5rem] md:rounded-[3.5rem] p-10 md:p-14 flex flex-col h-full border-blue-500/20 group">
+                            <div class="flex justify-between items-start mb-8 text-blue-500">
+                                <span class="text-[10px] md:text-xs font-black uppercase tracking-[0.3em]">Flagship Case Study</span>
+                                <i class="fas fa-user-tie text-2xl md:text-4xl"></i>
+                            </div>
+                            <h3 class="text-3xl md:text-4xl font-bold mb-4">Multi-Modal AI Interviewer</h3>
+                            <p class="text-muted mb-8">Agentic, real-time interview system combining LLM reasoning and sub-100ms inference pipelines.</p>
+                            <div class="flex flex-wrap gap-6 mt-auto">
+                                <a href="#" onclick="switchView('case-study-interviewer', true)" class="text-[10px] font-black uppercase text-blue-500 hover:underline">View Deep Dive</a>
+                                <a href="https://github.com/Flame77X" target="_blank" class="text-[10px] font-black uppercase text-blue-500 hover:underline">GitHub</a>
+                            </div>
+                        </div>
+
+                        <!-- 2. BloodSync -->
+                        <div class="project-item ai reveal bento-card rounded-[2.5rem] md:rounded-[3.5rem] p-8 md:p-10 border-rose-500/20">
+                            <div class="flex justify-between items-start mb-6 text-rose-500">
+                                <span class="text-[10px] md:text-xs font-black uppercase tracking-[0.3em]">NLU Engine</span>
+                                <i class="fas fa-tint text-xl md:text-3xl"></i>
+                            </div>
+                            <h3 class="text-xl md:text-2xl font-bold mb-4 text-main">BloodSync AI Bot</h3>
+                            <p class="text-sm md:text-base text-muted leading-relaxed">Real-time matching system utilizing Telegram Cloud API and Cloud Firestore with multi-agent logic.</p>
+                        </div>
+
+                        <!-- Doctus Grid -->
+                        <div class="project-item ai web reveal bento-card rounded-[2.5rem] md:rounded-[3.5rem] p-8 md:p-10 border-emerald-500/20">
+                            <div class="flex justify-between items-start mb-6 text-emerald-500">
+                                <span class="text-[10px] md:text-xs font-black uppercase tracking-[0.3em]">
+                                    In Development
+                                </span>
+                                <i class="fas fa-brain text-xl md:text-3xl"></i>
+                            </div>
+                            <h3 class="text-xl md:text-2xl font-bold mb-4 text-main">
+                                Doctus Grid
+                            </h3>
+                            <p class="text-sm md:text-base text-muted leading-relaxed">
+                                A multimodal AI educational station featuring a multi-persona engine that adapts
+                                teaching style dynamically. Supports persona-based prompting, keyword-triggered
+                                image generation, persistent sessions, and a glassmorphism UI.
+                            </p>
+                            <p class="mt-4 text-[11px] uppercase tracking-widest text-muted font-bold">
+                                React · Node.js · Express · LLMs · Pollinations.ai
+                            </p>
+                        </div>
+
+                        <!-- 3. Nexus Assistant -->
+                        <div class="project-item ai reveal bento-card rounded-[2.5rem] md:rounded-[3.5rem] p-8 md:p-10 border-indigo-500/20">
+                            <div class="flex justify-between items-start mb-6 text-indigo-500">
+                                <span class="text-[10px] md:text-xs font-black uppercase tracking-[0.3em]">EdTech Agent</span>
+                                <i class="fas fa-graduation-cap text-xl md:text-3xl"></i>
+                            </div>
+                            <h3 class="text-xl md:text-2xl font-bold mb-4 text-main">Nexus Assistant</h3>
+                            <p class="text-sm md:text-base text-muted leading-relaxed">Multi-persona agent with voice interaction and real-time visual grounding using Llama 3.3.</p>
+                        </div>
+
+                        <!-- 4. ROS Mobile Bot -->
+                        <div class="project-item robotics reveal bento-card rounded-[2.5rem] md:rounded-[3.5rem] p-8 md:p-10 border-gray-500/20">
+                            <div class="flex justify-between items-start mb-6 text-muted">
+                                <span class="text-[10px] md:text-xs font-black uppercase tracking-[0.3em]">Autonomous Systems</span>
+                                <i class="fas fa-robot text-xl md:text-3xl"></i>
+                            </div>
+                            <h3 class="text-xl md:text-2xl font-bold mb-4 text-main">ROS Mobile Robot</h3>
+                            <p class="text-sm md:text-base text-muted leading-relaxed">Platform for navigation developed with Python and ROS multi-sensor fusion for spatial environment classification.</p>
+                        </div>
+
+                        <!-- 5. Live Scoreboard -->
+                        <div class="project-item web reveal bento-card rounded-[2.5rem] md:rounded-[3.5rem] p-8 md:p-10 border-cyan-500/20">
+                            <div class="flex justify-between items-start mb-6 text-cyan-500">
+                                <span class="text-[10px] md:text-xs font-black uppercase tracking-[0.3em]">Real-time Web</span>
+                                <i class="fas fa-futbol text-xl md:text-3xl"></i>
+                            </div>
+                            <h3 class="text-xl md:text-2xl font-bold mb-4 text-main">Live Web Scoreboard</h3>
+                            <p class="text-sm md:text-base text-muted leading-relaxed">React platform delivering match scores to 200+ students via Firebase real-time subscription models.</p>
+                        </div>
+
+                        <!-- 6. UAV Drone -->
+                        <div class="project-item robotics reveal bento-card rounded-[2.5rem] md:rounded-[3.5rem] p-8 md:p-10 border-purple-500/20">
+                            <div class="flex justify-between items-start mb-6 text-purple-500">
+                                <span class="text-[10px] md:text-xs font-black uppercase tracking-[0.3em]">Aerial Systems</span>
+                                <i class="fas fa-drone text-xl md:text-3xl"></i>
+                            </div>
+                            <h3 class="text-xl md:text-2xl font-bold mb-4 text-main">UAV Drone Project</h3>
+                            <p class="text-sm md:text-base text-muted leading-relaxed">Semi-autonomous flight prototype programmed with custom firmware for stable aerial navigation.</p>
+                        </div>
+
+                        <!-- 7. ChromoShift AI -->
+                        <div class="project-item ai reveal lg:col-span-3 bento-card rounded-[2.5rem] md:rounded-[3.5rem] p-10 md:p-14 border-yellow-500/20">
+                            <div class="flex justify-between items-start mb-10 text-yellow-500">
+                                <span class="text-[10px] md:text-xs font-black uppercase tracking-[0.3em]">Vision Lab</span>
+                                <i class="fas fa-magic text-3xl md:text-4xl"></i>
+                            </div>
+                            <h3 class="text-3xl md:text-4xl font-bold mb-6 text-center text-main">ChromoShift AI</h3>
+                            <p class="text-lg md:text-xl text-muted font-medium text-center max-w-5xl mx-auto leading-relaxed">
+                                Supervised machine learning system designed to automatically colorize grayscale image datasets through deep pattern recognition.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section id="contact" class="py-24 md:py-48">
+                <div class="max-w-big mx-auto px-6 md:px-12 text-center text-main">
+                    <div class="reveal bento-card rounded-[3rem] p-12 md:p-32 overflow-hidden relative group cursor-default">
+                        <div class="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition duration-1000"></div>
+                        <h2 class="text-4xl md:text-7xl font-extrabold mb-8 md:mb-10 tracking-tighter text-gradient leading-[1.1] pb-2 text-main">Initialize Protocol.</h2>
+                        <form action="https://formspree.io/f/xnnzneno" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-3xl mx-auto text-left">
+                            <input type="text" name="name" placeholder="Name" required class="bg-white/5 border border-theme rounded-xl px-6 py-4 text-base focus:border-blue-500 outline-none text-main">
+                            <input type="email" name="email" placeholder="Email" required class="bg-white/5 border border-theme rounded-xl px-6 py-4 text-base focus:border-blue-500 outline-none text-main">
+                            <textarea name="message" rows="5" placeholder="Details..." required class="md:col-span-2 bg-white/5 border border-theme rounded-xl px-6 py-4 text-base focus:border-blue-500 outline-none resize-none text-main"></textarea>
+                            <div class="md:col-span-2 w-full mt-4">
+                                <button type="submit" class="w-full btn-theme py-5 rounded-2xl font-black text-xl md:text-2xl hover:bg-blue-500 hover:text-white transition-all shadow-2xl border-0">Transmit Protocol</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- FLAGSHIP CASE STUDY VIEW -->
+    <div id="case-study-interviewer-view" class="page-view">
+        <section class="py-24 md:py-32 max-w-5xl mx-auto px-6 text-main">
+            <button onclick="switchView('main', true)" class="text-blue-500 font-black uppercase text-xs mb-12 hover:underline transition"><i class="fas fa-arrow-left mr-2"></i> Back to Inference Lab</button>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6 text-gradient leading-tight">Multi-Modal AI Interviewer</h1>
+            <p class="text-muted text-lg md:text-xl mb-12 font-medium leading-relaxed text-main">An agentic, real-time interview system combining LLM reasoning, emotion analysis, and sub-100ms inference pipelines.</p>
+            <div class="bento-card p-8 rounded-2xl mb-16 border-blue-500/20 bg-blue-500/5">
+                <h3 class="text-xs font-black uppercase tracking-widest text-blue-500 mb-4 text-center">Executive Summary</h3>
+                <ul class="space-y-3 font-bold text-base md:text-lg text-main">
+                    <li class="flex items-start"><span class="text-blue-500 mr-2">•</span> Designed a multi-agent interview system using LLM orchestration</li>
+                    <li class="flex items-start"><span class="text-blue-500 mr-2">•</span> Reduced response latency by <span class="underline decoration-blue-500 decoration-2 underline-offset-4">35%</span></li>
+                    <li class="flex items-start"><span class="text-blue-500 mr-2">•</span> Achieved <span class="underline decoration-blue-500 decoration-2 underline-offset-4">sub-100ms</span> inference with Groq LPU</li>
+                </ul>
+            </div>
+            <button onclick="switchView('main', true)" class="w-full btn-theme py-5 rounded-2xl font-black text-lg hover:scale-[1.02] transition shadow-2xl">Return to Inference Lab</button>
+        </section>
+    </div>
+
+    <footer class="py-24 md:py-32 border-t border-theme text-center px-6">
+        <h4 class="text-2xl md:text-3xl font-bold tracking-tighter mb-4 inline-block text-main">RAHUL<span class="text-blue-500">.</span>S</h4>
+        <div class="flex justify-center space-x-12 md:space-x-20 mb-12 text-muted">
+            <a href="https://www.linkedin.com/in/rahul-sandesh-8a1786246/" class="hover:text-blue-500 transition hover-target" aria-label="LinkedIn"><i class="fab fa-linkedin text-3xl md:text-4xl"></i></a>
+            <a href="https://github.com/Flame77X" class="hover:text-blue-500 transition hover-target" aria-label="GitHub"><i class="fab fa-github text-3xl md:text-4xl"></i></a>
+            <a href="mailto:rahulsandeshx3000@gmail.com" class="hover:text-red-500 transition hover-target" aria-label="Email"><i class="fas fa-envelope text-3xl md:text-4xl"></i></a>
+        </div>
+        <p class="text-muted text-[10px] md:text-xs font-bold tracking-[0.4em] uppercase">&copy; 2025 Rahul Sandesh • Optimized Neural Portfolio</p>
+    </footer>
+
+    <!-- Custom Alert -->
+    <div id="custom-alert-modal" class="fixed inset-0 z-[10002] flex items-center justify-center p-6 bg-black/80 opacity-0 pointer-events-none transition duration-300">
+        <div class="glass p-12 md:p-16 rounded-[2.5rem] md:rounded-[3rem] max-sm:md:max-w-md w-full text-center border border-blue-500/20 shadow-2xl">
+            <div class="w-16 h-16 md:w-20 md:h-20 bg-blue-500/10 text-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-8">
+                <i class="fas fa-check text-3xl md:text-4xl"></i>
+            </div>
+            <h3 class="text-2xl md:text-3xl font-extrabold mb-4 md:mb-6 text-main">Protocol Received</h3>
+            <p class="text-gray-400 text-base md:text-lg mb-8 md:mb-10 font-medium" id="custom-alert-message"></p>
+            <button id="custom-alert-ok-btn" class="w-full py-4 md:py-5 rounded-2xl bg-white text-black font-black text-lg md:text-xl hover:bg-blue-500 hover:text-white transition hover-target">Understood</button>
+        </div>
+    </div>
+
+    <script>
+        // VIEW SWITCHER
+        const switchView = (vId, forceTop = false) => {
+            document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
+            const targetView = document.getElementById(vId + '-view');
+            if(targetView) targetView.classList.add('active');
+            if(forceTop) window.scrollTo({ top: 0, behavior: 'instant' });
+            setTimeout(reveal, 100);
+        };
+
+        const reveal = () => {
+            document.querySelectorAll(".reveal").forEach(r => {
+                if (r.getBoundingClientRect().top < window.innerHeight - 80) r.classList.add("active");
+            });
+        };
+
+        const forceTopOnLoad = () => {
+            if ('scrollRestoration' in history) {
+                history.scrollRestoration = 'manual';
+            }
+            window.scrollTo(0, 0);
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            forceTopOnLoad();
+
+            const root = document.documentElement;
+
+            // --- THEME ---
+            const toggleBtn = document.getElementById("theme-toggle");
+            const setTheme = (theme) => {
+                root.setAttribute("data-theme", theme);
+                localStorage.setItem("theme", theme);
+                toggleBtn.innerHTML = theme === "dark" ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+            };
+            setTheme(localStorage.getItem("theme") || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"));
+            toggleBtn.onclick = () => setTheme(root.getAttribute("data-theme") === "dark" ? "light" : "dark");
+
+            // --- MOTION ---
+            const motionBtn = document.getElementById("motion-toggle");
+            const setMotion = mode => {
+                root.setAttribute("data-motion", mode);
+                localStorage.setItem("motion", mode);
+                motionBtn.innerHTML = mode === "full" ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+            };
+            setMotion(localStorage.getItem("motion") || "full");
+            motionBtn.onclick = () => setMotion(root.getAttribute("data-motion") === "full" ? "reduced" : "full");
+
+            // --- PRELOADER ---
+            let progress = 0;
+            const fill = document.getElementById('loader-fill');
+            const text = document.getElementById('loader-text');
+            const interval = setInterval(() => {
+                progress += Math.random() * 25;
+                if (progress >= 100) {
+                    progress = 100; clearInterval(interval);
+                    document.getElementById('preloader').style.opacity = '0';
+                    setTimeout(() => { 
+                        document.getElementById('preloader').style.visibility = 'hidden'; 
+                        window.scrollTo({ top: 0, behavior: 'instant' }); 
+                        reveal();
+                    }, 800);
+                }
+                if(fill) fill.style.width = progress + '%';
+                if(text) text.innerText = Math.floor(progress) + '%';
+            }, 100);
+
+            window.addEventListener('scroll', reveal);
+
+            // --- TERMINAL ---
+            const terminalInput = document.getElementById('terminal-input');
+            const terminalOutput = document.getElementById('terminal-output');
+            if(terminalInput && terminalOutput) {
+                terminalInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        const cmd = terminalInput.value.toLowerCase().trim();
+                        const line = document.createElement('p');
+                        line.innerHTML = `<span style="color: var(--color-accent-primary)">$ ${cmd}</span>`;
+                        terminalOutput.appendChild(line);
+                        
+                        let response = "Available: about, skills, projects, resume, contact, clear";
+                        const commands = {
+                            'help': "Available: 'about', 'skills', 'projects', 'resume', 'contact', 'clear'",
+                            'about': "Rahul Sandesh: AI Architect specialized in LLM workflows.",
+                            'skills': "Python, Llama 3.3, RAG, FastAPI, React, ROS, DeepFace.",
+                            'projects': "Active: AI Interviewer, BloodSync, Doctus Grid, Nexus Assistant, ChromoShift, ROS Bot, Scoreboard, UAV Drone.",
+                            'resume': "Protocol initiated. Opening resume node...",
+                            'contact': "rahulsandeshx3000@gmail.com",
+                            'clear': ""
+                        };
+                        if (cmd in commands) {
+                            response = commands[cmd];
+                            if(cmd === 'clear') { terminalOutput.innerHTML = ""; response = "Logs cleared."; }
+                            if(cmd === 'resume') window.open('https://www.dropbox.com/scl/fi/nl5n4mva3c9jwx0hjlhde/Rahul_Resume-new8.pdf?rlkey=uerembop7acq75qwh26p9bv8k&raw=1');
+                        }
+                        const resLine = document.createElement('p');
+                        resLine.style.color = "var(--color-text-secondary)";
+                        resLine.innerText = response; 
+                        terminalOutput.appendChild(resLine);
+                        terminalInput.value = ""; 
+                        terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                    }
+                });
+            }
+
+            // --- CANVAS ---
+            const canvas = document.getElementById('neural-canvas');
+            if(canvas) {
+                const ctx = canvas.getContext('2d');
+                let particles = [];
+                const initCanvas = () => {
+                    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+                    particles = [];
+                    const density = window.innerWidth < 768 ? 25000 : 12000;
+                    for (let i = 0; i < (canvas.width * canvas.height) / density; i++) {
+                        particles.push({
+                            x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+                            vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4, size: Math.random() * 2 + 1
+                        });
+                    }
+                };
+                const animateCanvas = () => {
+                    if(root.getAttribute('data-motion') === 'reduced') return requestAnimationFrame(animateCanvas);
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    const lineDist = window.innerWidth < 768 ? 80 : 150;
+                    for (let i = 0; i < particles.length; i++) {
+                        let p = particles[i]; p.x += p.vx; p.y += p.vy;
+                        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                        ctx.fillStyle = root.getAttribute('data-theme') === 'light' ? 'rgba(37, 99, 235, 0.3)' : 'rgba(59, 130, 246, 0.4)';
+                        ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+                        for (let j = i + 1; j < particles.length; j++) {
+                            let p2 = particles[j];
+                            let dist = Math.sqrt((p.x - p2.x)**2 + (p.y - p2.y)**2);
+                            if (dist < lineDist) {
+                                ctx.strokeStyle = root.getAttribute('data-theme') === 'light' 
+                                    ? `rgba(37, 99, 235, ${0.1 * (1 - dist/lineDist)})` 
+                                    : `rgba(59, 130, 246, ${0.4 * (1 - dist/lineDist)})`;
+                                ctx.lineWidth = 0.5; ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
+                            }
+                        }
+                    }
+                    requestAnimationFrame(animateCanvas);
+                };
+                window.addEventListener('resize', initCanvas); initCanvas(); animateCanvas();
+            }
+
+            // --- CURSOR ---
+            if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+                const cursor = document.getElementById('custom-cursor');
+                document.addEventListener('mousemove', (e) => {
+                    if(cursor) { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; }
+                });
+                document.querySelectorAll('.hover-target').forEach(item => {
+                    item.addEventListener('mouseenter', () => cursor?.classList.add('cursor-hover'));
+                    item.addEventListener('mouseleave', () => cursor?.classList.remove('cursor-hover'));
+                });
+            }
+
+            // --- TYPING ---
+            const tagline = document.getElementById("hero-tagline");
+            const words = ["Generative AI Specialist", "Machine Learning Researcher", "Entrepreneurial Engineer"];
+            let wordIdx = 0, charIdx = 0, isDeleting = false;
+            const type = () => {
+                if(!tagline) return;
+                const current = words[wordIdx];
+                tagline.innerHTML = isDeleting ? current.substring(0, charIdx - 1) : current.substring(0, charIdx + 1);
+                charIdx += isDeleting ? -1 : 1;
+                if (!isDeleting && charIdx === current.length) { isDeleting = true; setTimeout(type, 2000); }
+                else if (isDeleting && charIdx === 0) { isDeleting = false; wordIdx = (wordIdx + 1) % words.length; setTimeout(type, 500); }
+                else setTimeout(type, isDeleting ? 70 : 120);
+            };
+            type();
+
+            // --- FILTER ---
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.onclick = () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    const filter = btn.dataset.filter;
+                    document.querySelectorAll('.project-item').forEach(item => {
+                        if (filter === 'all' || item.classList.contains(filter)) {
+                            item.style.display = 'flex'; setTimeout(() => item.style.opacity = '1', 10);
+                        } else {
+                            item.style.opacity = '0'; setTimeout(() => item.style.display = 'none', 300);
+                        }
+                    });
+                };
+            });
+        });
+
+        const toggleMenu = () => document.getElementById('mobile-menu').classList.toggle('active');
+        document.getElementById('custom-alert-ok-btn').onclick = () => {
+            const modal = document.getElementById('custom-alert-modal');
+            if(modal) { modal.classList.add('pointer-events-none'); modal.style.opacity = "0"; }
+        };
+    </script>
+</body>
+</html>
