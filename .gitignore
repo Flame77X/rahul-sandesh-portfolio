@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local agent/editor config
+.claude/
+
+# Design sources and raw assets kept out of the app repo
+*.zip
+WhatsApp Image*

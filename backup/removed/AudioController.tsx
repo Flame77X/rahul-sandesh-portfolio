@@ -83,7 +83,7 @@ const AudioController = () => {
     return (
         <button
             onClick={toggleMute}
-            className="fixed bottom-8 left-8 z-[100] p-3 rounded-full bg-white/5 border border-white/10 text-white/50 hover:text-white hover:bg-white/10 transition-all backdrop-blur-md"
+            className="fixed bottom-8 left-8 z-[100] p-3 rounded-full bg-ink-1/80 border border-ink-4 text-ink-7 hover:text-ink-9 hover:border-accent-border transition-colors backdrop-blur-md"
         >
             {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
         </button>
