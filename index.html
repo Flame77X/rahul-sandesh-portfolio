@@ -3,36 +3,87 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f8f9fa" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0d0f10" media="(prefers-color-scheme: dark)" />
+
+  <!--
+    Resolve the theme before first paint. Without this the page renders in the
+    default light palette for a frame before React mounts, which reads as a
+    flash for anyone on dark.
+  -->
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme =
+          stored === 'light' || stored === 'dark' ? stored : (prefersDark ? 'dark' : 'light');
+      } catch (e) {
+        document.documentElement.dataset.theme = 'light';
+      }
+    })();
+  </script>
 
   <!-- Primary Meta Tags -->
-  <title>Rahul Sandesh | AI Architect & ML Engineer</title>
-  <meta name="title" content="Rahul Sandesh | AI Architect & ML Engineer" />
+  <title>Rahul Sandesh | AI & Machine Learning Engineer</title>
+  <meta name="title" content="Rahul Sandesh | AI & Machine Learning Engineer" />
   <meta name="description"
-    content="Portfolio of Rahul Sandesh: AI Architect specialized in Agentic Workflows, LLMs, and Robotics. Exploring the intersection of neural networks and spatial design." />
-  <meta name="keywords" content="AI, Machine Learning, Robotics, Stylized Web, Three.js, React, RAG, LLM" />
+    content="Portfolio of Rahul Sandesh — AI/ML engineer building LLM inference systems, RAG pipelines, and production data workflows. Selected work, experience, and resume." />
   <meta name="author" content="Rahul Sandesh" />
+  <link rel="canonical" href="https://rahulx3000.in/" />
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://rahulsandesh.com/" />
-  <meta property="og:title" content="Rahul Sandesh | AI Architect & ML Engineer" />
+  <meta property="og:url" content="https://rahulx3000.in/" />
+  <meta property="og:title" content="Rahul Sandesh | AI & Machine Learning Engineer" />
   <meta property="og:description"
-    content="Portfolio of Rahul Sandesh: AI Architect specialized in Agentic Workflows, LLMs, and Robotics." />
-  <meta property="og:image" content="/og-image.png" />
+    content="AI/ML engineer building LLM inference systems, RAG pipelines, and production data workflows." />
+  <!-- Generated from src/data/site.ts by `npm run og`. -->
+  <meta property="og:image" content="https://rahulx3000.in/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Rahul Sandesh — AI/ML Engineer" />
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content="https://rahulsandesh.com/" />
-  <meta property="twitter:title" content="Rahul Sandesh | AI Architect & ML Engineer" />
+  <meta property="twitter:url" content="https://rahulx3000.in/" />
+  <meta property="twitter:title" content="Rahul Sandesh | AI & Machine Learning Engineer" />
   <meta property="twitter:description"
-    content="Portfolio of Rahul Sandesh: AI Architect specialized in Agentic Workflows, LLMs, and Robotics." />
-  <meta property="twitter:image" content="/og-image.png" />
+    content="AI/ML engineer building LLM inference systems, RAG pipelines, and production data workflows." />
+  <meta property="twitter:image" content="https://rahulx3000.in/og-image.png" />
+
+  <!-- Fonts: Noto Serif (display) · Hanken Grotesk (body) · JetBrains Mono (data) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Noto+Serif:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Rahul Sandesh",
+      "jobTitle": "AI & Machine Learning Engineer",
+      "url": "https://rahulx3000.in/",
+      "email": "mailto:rahulsandeshx3000@gmail.com",
+      "alumniOf": "Providence College of Engineering",
+      "sameAs": [
+        "https://github.com/Flame77X",
+        "https://www.linkedin.com/in/rahul-sandesh-8a1786246/"
+      ],
+      "knowsAbout": ["Large Language Models", "Retrieval Augmented Generation", "Machine Learning", "Robotics", "ROS"]
+    }
+  </script>
 </head>
 
 <body>
   <div id="root"></div>
+  <noscript>
+    This portfolio requires JavaScript. Reach Rahul Sandesh at rahulsandeshx3000@gmail.com.
+  </noscript>
   <script type="module" src="/src/main.tsx"></script>
 </body>
 

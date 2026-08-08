@@ -6,7 +6,8 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  // `backup` holds retired components kept for reference — not shipped, not linted.
+  globalIgnores(['dist', 'backup']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [

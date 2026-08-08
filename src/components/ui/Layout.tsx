@@ -1,22 +1,15 @@
 import { ReactLenis } from '@studio-freight/react-lenis';
-import Scene from '../canvas/Scene';
-import AudioController from './AudioController';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import { usePrefersReducedMotion } from '../../hooks/useEnvironment';
 
-interface LayoutProps {
-    children: ReactNode;
-}
+const Layout = ({ children }: { children: ReactNode }) => {
+  const reducedMotion = usePrefersReducedMotion();
 
-const Layout = ({ children }: LayoutProps) => {
-    return (
-        <ReactLenis root>
-            <Scene />
-            <AudioController />
-            <div className="relative z-10 w-full min-h-screen">
-                {children}
-            </div>
-        </ReactLenis>
-    );
+  return (
+    <ReactLenis root options={{ smoothWheel: !reducedMotion, syncTouch: false }}>
+      <div className="relative w-full min-h-screen">{children}</div>
+    </ReactLenis>
+  );
 };
 
 export default Layout;
